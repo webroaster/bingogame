@@ -4,6 +4,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: #333;
+  color: #fff;
 }
 
 a {
@@ -15,12 +17,118 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.container {
+  margin: 10vh auto;
+  width: 90%;
+  max-width: 980px;
+}
+
+.title {
+  text-align: center;
+}
+
+.startButton {
+  display: block;
+  padding: 1em 3em;
+  margin: 0 auto;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.startButton.fin {
+  background: #ff5151;
+  color: #fff;
+}
+
+.bingoFlex {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.bingoFlex > div {
+  width: 100%;
+}
+.bingoFlex > p,
+.alertFlex > p {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.alertFlex {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 10px;
+  margin: 20px 0;
+}
+
+@media screen and (max-width: 768px) {
+  .bingoFlex {
+    grid-template-columns: 1fr;
   }
-  body {
-    color: white;
-    background: black;
+}
+
+.nowOutNumber {
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.outNumbers {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-gap: 5px;
+  width: 100%;
+  max-width: 500px;
+  margin: 30px auto;
+}
+.outNumber {
+  padding: 0.5em;
+  background: #f0eded;
+  color: black;
+  border-radius: 3px;
+  text-align: center;
+}
+.outNumber.break {
+  background: #ff5151;
+  color: #fff;
+}
+@media screen and (max-width: 768px) {
+  .outNumber {
+    padding: 0.3em;
+  }
+}
+
+.bingoCard {
+  width: 100%;
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 10px;
+  background: #f0eded;
+  border-radius: 10px;
+  table-layout: fixed;
+  word-break: break-all;
+  word-wrap: break-all;
+}
+
+.bingoCard td {
+  text-align: center;
+  padding: 1.5em;
+  color: #333;
+  font-weight: bold;
+}
+.bingoCard td.break {
+  background: #ff5151;
+  color: #fff !important;
+}
+@media screen and (max-width: 768px) {
+  .bingoCard td {
+    padding: 0.5em;
   }
 }
