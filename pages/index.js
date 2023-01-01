@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { useState } from "react"
 import BingoBall from "../class/BingoBall"
-import BingoCard from "../Class/BingoCard"
+import BingoCard from "../class/BingoCard"
 
 const bingoBall = new BingoBall()
 const bingoCard = new BingoCard()
