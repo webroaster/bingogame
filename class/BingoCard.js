@@ -5,6 +5,7 @@ export default class BingoCard {
   }
 
   // カード生成
+  // カード作るところを5回処理を書くのではなくループで処理する
   createCard() {
     const col_B_list = Array(15)
       .fill(null)
@@ -67,6 +68,7 @@ export default class BingoCard {
         }
       })
     )
+
     this.card[2][2].judge = false
     return this.card
   }
@@ -96,51 +98,78 @@ export default class BingoCard {
     return breakNumber
   }
 
-  // ビンゴを検証
-  isBingoLine(line) {
-    return line.every((el) => !el)
+  // ビンゴチェックとリーチチェックの処理を共通化する
+  isLineCheck(line) {
+    let unBreakLength = 0
+    let breakLength = 0
+    line.map((el) => {
+      if (el) {
+        unBreakLength++
+      } else {
+        breakLength++
+      }
+    })
+
+    if (breakLength === 5) {
+      return "bingo"
+    } else if (unBreakLength === 1 && breakLength === 4) {
+      return "reach"
+    }
   }
 
-  // ビンゴの数チェック
-  checkBingo() {
-    const horizontalBingo = this.horizontalResult
-    const verticalBingo = this.verticalResult
-    const crossLineBingo = this.crossLineResult
+  // ビンゴとリーチの数をチェック
+  checkResult() {
+    const bingo =
+      this.horizontalResult.bingoResult +
+      this.verticalResult.bingoResult +
+      this.crossLineResult.bingoResult
+    const reach =
+      this.horizontalResult.reachResult +
+      this.verticalResult.reachResult +
+      this.crossLineResult.reachResult
+    const result = { bingo, reach }
 
-    return horizontalBingo + verticalBingo + crossLineBingo
+    return result
   }
 
   // 横の列チェック
   get horizontalResult() {
-    let result = 0
+    let bingoResult = 0
+    let reachResult = 0
     for (let i = 0; i < 5; i++) {
       const row = this.card[i].map((val) => {
         return val.judge
       })
-      if (this.isBingoLine(row)) {
-        result++
+      if (this.isLineCheck(row) === "bingo") {
+        bingoResult++
+      } else if (this.isLineCheck(row) === "reach") {
+        reachResult++
       }
     }
-    return result
+    return { bingoResult, reachResult }
   }
 
   // 縦の列チェック
   get verticalResult() {
-    let result = 0
+    let bingoResult = 0
+    let reachResult = 0
     for (let index = 0; index < 5; index++) {
       const col = [...new Array(5)].map((_, key) => {
         return this.card[key][index].judge
       })
-      if (this.isBingoLine(col)) {
-        result++
+      if (this.isLineCheck(col) === "bingo") {
+        bingoResult++
+      } else if (this.isLineCheck(col) === "reach") {
+        reachResult++
       }
     }
-    return result
+    return { bingoResult, reachResult }
   }
 
   // 斜の列チェック
   get crossLineResult() {
-    let result = 0
+    let bingoResult = 0
+    let reachResult = 0
 
     const crossLineArr = [[], []]
     for (let i = 0; i < 5; i++) {
@@ -150,86 +179,12 @@ export default class BingoCard {
 
     for (let i = 0; i < crossLineArr.length; i++) {
       const line = crossLineArr[i]
-      if (this.isBingoLine(line)) {
-        result++
+      if (this.isLineCheck(line) === "bingo") {
+        bingoResult++
+      } else if (this.isLineCheck(line) === "reach") {
+        reachResult++
       }
     }
-    return result
-  }
-
-  // リーチになったらtrueを返す
-  isReachLine(line) {
-    let trueNumber = 0
-    let falseNumber = 0
-    line.map((el) => {
-      if (el) {
-        trueNumber++
-      } else {
-        falseNumber++
-      }
-    })
-    return trueNumber === 1 && falseNumber === 4
-  }
-
-  // リーチの数チェック
-  checkReach() {
-    const horizontalReach = this.horizontalReachResult
-    const verticalReach = this.verticalReachResult
-    const crossLineReach = this.crossLineReachResult
-
-    return horizontalReach + verticalReach + crossLineReach
-  }
-
-  // 横リーチチェック
-  get horizontalReachResult() {
-    let result = 0
-    for (let i = 0; i < 5; i++) {
-      const row = this.card[i].map((val) => {
-        return val.judge
-      })
-      if (this.isReachLine(row)) {
-        result++
-      } else if (this.isBingoLine(row)) {
-        ;-result
-      }
-    }
-    return result
-  }
-
-  // 縦リーチ列チェック
-  get verticalReachResult() {
-    let result = 0
-    for (let index = 0; index < 5; index++) {
-      const col = [...new Array(5)].map((_, key) => {
-        return this.card[key][index].judge
-      })
-      if (this.isReachLine(col)) {
-        result++
-      } else if (this.isBingoLine(col)) {
-        ;-result
-      }
-    }
-    return result
-  }
-
-  // 斜リーチ列チェック
-  get crossLineReachResult() {
-    let result = 0
-
-    const crossLineArr = [[], []]
-    for (let i = 0; i < 5; i++) {
-      crossLineArr[0].push(this.card[i][i].judge)
-      crossLineArr[1].push(this.card[i][this.card.length - i - 1].judge)
-    }
-
-    for (let i = 0; i < crossLineArr.length; i++) {
-      const line = crossLineArr[i]
-      if (this.isReachLine(line)) {
-        result++
-      } else if (this.isBingoLine(line)) {
-        ;-result
-      }
-    }
-    return result
+    return { bingoResult, reachResult }
   }
 }

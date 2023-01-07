@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <div className='container'>
       <h1 className='title'>BINGO GAME</h1>
-      {bingoCard.checkBingo() !== 12 ? (
+      {bingoCard.checkResult().bingo !== 12 ? (
         <button className='startButton' onClick={() => handleClick()}>
           ビンゴを回す
         </button>
@@ -38,8 +38,8 @@ export default function Home() {
       )}
       <div className='alertFlex'>
         <p>抽選回数：{outNumbers.length}</p>
-        <p>ビンゴの数：{bingoCard.checkBingo()}</p>
-        <p>リーチの数：{bingoCard.checkReach()}</p>
+        <p>ビンゴの数：{bingoCard.checkResult().bingo}</p>
+        <p>リーチの数：{bingoCard.checkResult().reach}</p>
       </div>
       <div className='bingoFlex'>
         <div>
