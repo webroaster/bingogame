@@ -5,71 +5,33 @@ export default class BingoCard {
   }
 
   // カード生成
-  // カード作るところを5回処理を書くのではなくループで処理する
   createCard() {
-    const col_B_list = Array(15)
-      .fill(null)
-      .map((_, i) => i + 1)
-    const col_I_list = Array.from({ length: 15 }, (_, i) => i + 16)
-    const col_N_list = Array.from({ length: 15 }, (_, i) => i + 31)
-    const col_G_list = Array.from({ length: 15 }, (_, i) => i + 46)
-    const col_O_list = Array.from({ length: 15 }, (_, i) => i + 61)
+    // 1〜75が入ったリストをそれぞれのカラムで15個ずつ２次元配列で定義
+    let num = 1
+    const list = Array.from(new Array(5), () =>
+      new Array(15).fill().map(() => {
+        const add = num
+        num++
+        return add
+      })
+    )
 
+    // カード作成
     this.card = Array.from(new Array(5), () =>
       new Array(5).fill().map((_, i) => {
-        switch (i) {
-          case 0:
-            const col_B_index = Math.floor(Math.random() * col_B_list.length)
-            const col_B_bingo = col_B_list[col_B_index]
-            col_B_list.splice(col_B_index, 1)
-            return {
-              num: col_B_bingo,
-              judge: true,
-            }
-
-          case 1:
-            const col_I_index = Math.floor(Math.random() * col_I_list.length)
-            const col_I_bingo = col_I_list[col_I_index]
-            col_I_list.splice(col_I_index, 1)
-            return {
-              num: col_I_bingo,
-              judge: true,
-            }
-
-          case 2:
-            const col_N_index = Math.floor(Math.random() * col_N_list.length)
-            const col_N_bingo = col_N_list[col_N_index]
-            col_N_list.splice(col_N_index, 1)
-            return {
-              num: col_N_bingo,
-              judge: true,
-            }
-
-          case 3:
-            const col_G_index = Math.floor(Math.random() * col_G_list.length)
-            const col_G_bingo = col_G_list[col_G_index]
-            col_G_list.splice(col_G_index, 1)
-            return {
-              num: col_G_bingo,
-              judge: true,
-            }
-
-          case 4:
-            const col_O_index = Math.floor(Math.random() * col_O_list.length)
-            const col_O_bingo = col_O_list[col_O_index]
-            col_O_list.splice(col_O_index, 1)
-            return {
-              num: col_O_bingo,
-              judge: true,
-            }
-
-          default:
-            break
+        const randomIndex = Math.floor(Math.random() * list[i].length)
+        const cardNum = list[i][randomIndex]
+        list[i].splice(randomIndex, 1)
+        return {
+          num: cardNum,
+          judge: true,
         }
       })
     )
 
+    // 真ん中をFreeで開けておく
     this.card[2][2].judge = false
+
     return this.card
   }
 

@@ -5,6 +5,7 @@ import BingoCard from "../class/BingoCard"
 
 const bingoBall = new BingoBall()
 const bingoCard = new BingoCard()
+console.log(bingoCard.card)
 
 export default function Home() {
   const router = useRouter()
