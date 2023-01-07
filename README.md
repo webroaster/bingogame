@@ -1,5 +1,7 @@
 ## ビンゴゲーム
 
+https://bingogame-4t1enmwez-webroaster.vercel.app/
+
 class ディレクトリにそれぞれのクラスを作成。 pages/index.js 部分で画面の描画や抽
 選した数字をステートとして保存し出力
 
