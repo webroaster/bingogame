@@ -5,7 +5,6 @@ import BingoCard from "../class/BingoCard"
 
 const bingoBall = new BingoBall()
 const bingoCard = new BingoCard()
-console.log(bingoCard.card)
 
 export default function Home() {
   const router = useRouter()
@@ -28,7 +27,7 @@ export default function Home() {
   return (
     <div className='container'>
       <h1 className='title'>BINGO GAME</h1>
-      {bingoCard.checkResult().bingo !== 12 ? (
+      {bingoCard.checkResult().bingo !== bingoCard.bingoWidth * 2 + 2 ? (
         <button className='startButton' onClick={() => handleClick()}>
           ビンゴを回す
         </button>
@@ -55,7 +54,10 @@ export default function Home() {
                           {obj.num}
                         </td>
                       )
-                    } else if (index === 2 && i === 2) {
+                    } else if (
+                      index === Math.floor(bingoCard.bingoWidth / 2) &&
+                      i === Math.floor(bingoCard.bingoWidth / 2)
+                    ) {
                       return (
                         <td key={i} suppressHydrationWarning className='break'>
                           FREE

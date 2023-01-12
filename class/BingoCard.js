@@ -1,14 +1,21 @@
 // ビンゴカード
 export default class BingoCard {
+  bingoWidth
   constructor() {
+    this.init()
     this.card = this.createCard()
+  }
+
+  // ビンゴの列の数を定義
+  init() {
+    this.bingoWidth = 7
   }
 
   // カード生成
   createCard() {
     // 1〜75が入ったリストをそれぞれのカラムで15個ずつ２次元配列で定義
     let num = 1
-    const list = Array.from(new Array(5), () =>
+    const list = Array.from(new Array(this.bingoWidth), () =>
       new Array(15).fill().map(() => {
         const add = num
         num++
@@ -17,8 +24,8 @@ export default class BingoCard {
     )
 
     // カード作成
-    this.card = Array.from(new Array(5), () =>
-      new Array(5).fill().map((_, i) => {
+    this.card = Array.from(new Array(this.bingoWidth), () =>
+      new Array(this.bingoWidth).fill().map((_, i) => {
         const randomIndex = Math.floor(Math.random() * list[i].length)
         const cardNum = list[i][randomIndex]
         list[i].splice(randomIndex, 1)
@@ -30,7 +37,8 @@ export default class BingoCard {
     )
 
     // 真ん中をFreeで開けておく
-    this.card[2][2].judge = false
+    const center = Math.floor(this.bingoWidth / 2)
+    this.card[center][center].judge = false
 
     return this.card
   }
@@ -72,9 +80,9 @@ export default class BingoCard {
       }
     })
 
-    if (breakLength === 5) {
+    if (breakLength === this.bingoWidth) {
       return "bingo"
-    } else if (unBreakLength === 1 && breakLength === 4) {
+    } else if (unBreakLength === 1 && breakLength === this.bingoWidth - 1) {
       return "reach"
     }
   }
@@ -98,7 +106,7 @@ export default class BingoCard {
   get horizontalResult() {
     let bingoResult = 0
     let reachResult = 0
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < this.bingoWidth; i++) {
       const row = this.card[i].map((val) => {
         return val.judge
       })
@@ -115,8 +123,8 @@ export default class BingoCard {
   get verticalResult() {
     let bingoResult = 0
     let reachResult = 0
-    for (let index = 0; index < 5; index++) {
-      const col = [...new Array(5)].map((_, key) => {
+    for (let index = 0; index < this.bingoWidth; index++) {
+      const col = [...new Array(this.bingoWidth)].map((_, key) => {
         return this.card[key][index].judge
       })
       if (this.isLineCheck(col) === "bingo") {
@@ -134,7 +142,7 @@ export default class BingoCard {
     let reachResult = 0
 
     const crossLineArr = [[], []]
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < this.bingoWidth; i++) {
       crossLineArr[0].push(this.card[i][i].judge)
       crossLineArr[1].push(this.card[i][this.card.length - i - 1].judge)
     }
